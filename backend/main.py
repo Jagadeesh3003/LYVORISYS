@@ -1,23 +1,25 @@
+import sys
+from pathlib import Path
+
+BACKEND_DIR = Path(__file__).resolve().parent
+PROJECT_DIR = BACKEND_DIR.parent
+
+for path in (str(BACKEND_DIR), str(PROJECT_DIR)):
+    if path not in sys.path:
+        sys.path.insert(0, path)
+
 from fastapi import FastAPI, Depends, UploadFile, File, HTTPException, status
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-try:
-    from backend.database.database import engine, Base, get_db
-    from backend.models.models import User, Employee, Holiday, SalaryRecord, Attendance, LeaveBalance, UploadedFileDB, SalaryObjection
-    from backend.services.excel_processor import process_attendance_excel
-    from backend.services.salary_service import calculate_monthly_salary
-    from backend.services.email_service import send_salary_slip_email
-    from backend.services.background_task_service import start_background_scheduler, stop_background_scheduler
-except ModuleNotFoundError:
-    from database.database import engine, Base, get_db
-    from models.models import User, Employee, Holiday, SalaryRecord, Attendance, LeaveBalance, UploadedFileDB, SalaryObjection
-    from services.excel_processor import process_attendance_excel
-    from services.salary_service import calculate_monthly_salary
-    from services.email_service import send_salary_slip_email
-    from services.background_task_service import start_background_scheduler, stop_background_scheduler
+from database.database import engine, Base, get_db
+from models.models import User, Employee, Holiday, SalaryRecord, Attendance, LeaveBalance, UploadedFileDB, SalaryObjection
+from services.excel_processor import process_attendance_excel
+from services.salary_service import calculate_monthly_salary
+from services.email_service import send_salary_slip_email
+from services.background_task_service import start_background_scheduler, stop_background_scheduler
 import shutil
 import os
 import holidays
